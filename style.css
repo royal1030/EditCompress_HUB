@@ -1,0 +1,72 @@
+/* Reset some default styling */
+body, h1, h5, p {
+	margin: 0;
+	padding: 0;
+}
+h1{
+	color: blueviolet;
+	font-family: 'Pacifico', cursive;	
+		  
+}
+
+/* Set a base font size */
+body {
+	font-size: 16px;
+	font-family: Arial, sans-serif;
+}
+
+/* Create a responsive layout using flexbox */
+.container {
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 600px;
+}
+
+.card {
+	background-color: #f0f0f0;
+	border-radius: 10px;
+	padding: 20px;
+	margin: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	flex: 1; /* Take up available space */
+	width: 70%;
+	max-width: 400px;
+	margin: 20px auto; /* Center horizontally */
+}
+
+/* Style the buttons */
+.btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #007bff;
+	color: #fff;
+	padding: 10px 20px;
+	border-radius: 5px;
+	text-decoration: none;
+	margin-top: 40px;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+	body {
+		font-size: 18px;
+	}
+	
+	.container {
+		/* flex-direction: row; */
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	
+	.card {
+		width: calc(33.33% - 40px);
+	}
+}

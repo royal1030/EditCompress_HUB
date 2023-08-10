@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Text Editor</title>
+    <style>
+      button {
+        /* Your default button styles */
+        border: none;
+        /* background: none; */
+        cursor: pointer;
+        outline: none;
+      }
+      /* Define the selected style for the button */
+      .selected-button {
+        background-color: #f0f0f0; /* Change this color to your desired selection color */
+        /* Add any other styles you want for the selected state */
+        color: blue;
+      }
+      .nonselected-button {
+        background-color: #e5e5e5;
+        color: black;
+      }
+    </style>
+    <script
+      src="https://kit.fontawesome.com/5112014d52.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body onload="enableEditMode();">
+    <div>
+      <button
+        id="boldButton"
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="bold"
+      >
+        <i class="fas fa-bold"></i>
+      </button>
+      <button
+        id="italicButton"
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="italic"
+      >
+        <i class="fas fa-italic"></i>
+      </button>
+      <button
+        id="underlineButton"
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="underline"
+      >
+        <i class="fas fa-underline"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="strikeThrough"
+      >
+        <i class="fas fa-strikethrough"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="justifyLeft"
+      >
+        <i class="fas fa-align-left"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="justifyCenter"
+      >
+        <i class="fas fa-align-center"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="justifyRight"
+      >
+        <i class="fas fa-align-right"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="justifyFull"
+      >
+        <i class="fas fa-align-justify"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="cut"
+      >
+        <i class="fas fa-cut"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="copy"
+      >
+        <i class="fas fa-copy"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="indent"
+      >
+        <i class="fas fa-indent"></i>
+      </button>
+
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="subscript"
+      >
+        <i class="fas fa-subscript"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="superscript"
+      >
+        <i class="fas fa-superscript"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="undo"
+      >
+        <i class="fas fa-undo"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="redo"
+      >
+        <i class="fas fa-redo"></i>
+      </button>
+
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="insertUnorderedList"
+      >
+        <i class="fas fa-list-ul"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="insertOrderedList"
+      >
+        <i class="fas fa-list-ol"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="insertParagraph"
+      >
+        <i class="fas fa-paragraph"></i>
+      </button>
+
+      <!-- <select onchange="execCommandWithArg('formatBlock', this.value)">
+        <option value="H1">H1</option>
+        <option value="H2">H2</option>
+        <option value="H3">H3</option>
+        <option value="H4">H4</option>
+        <option value="H5">H5</option>
+        <option value="H6">H6</option>
+      </select> -->
+
+      <button
+        onclick="execCommandWithArg('createLink',prompt('Enter a URL','http://'));"
+      >
+        <i class="fas fa-link"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="unlink"
+      >
+        <i class="fas fa-unlink"></i>
+      </button>
+      <!-- <button onclick="toogleSource();"><i class="fas fa-code"></i></button> -->
+      <button onclick="toggleEdit();">Toggle Edit</button>
+      <br />
+
+      <select onchange="execCommandWithArg('fontName', this.value)">
+        <option value="Arial">Arial</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+        <option value="Courier">Courier</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Tahoma">Tahoma</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+      </select>
+
+      <select onchange="execCommandWithArg('fontSize', this.value)">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+      </select>
+
+      Fore Color:
+      <input
+        id="textColorPicker"
+        type="color"
+        onchange="execCommandWithArg('foreColor', this.value)"
+      />
+      Background Color:
+      <input
+        id="bgColorPicker"
+        type="color"
+        onchange="execCommandWithArg('hiliteColor', this.value)"
+        value="#FFFFFF"
+      />
+
+      <button
+        onclick="execCommandWithArg('insertImage', prompt('Enter the image URL',''));"
+      >
+        <i class="fas fa-file"></i>
+      </button>
+      <button
+        class="toggle-button"
+        onclick="toggleSelection(this);"
+        datacommand="selectAll"
+      >
+        Select All
+      </button>
+    </div>
+
+    <!-- <iframe name="textField" style="width: 1000px; height: 500px"></iframe> -->
+    <iframe
+      name="textField"
+      style="width: 1000px; height: 500px"
+      onload="addSelectionListener();"
+    ></iframe>
+
+    <script>
+      var showingSourceCode = false;
+      var isInEditMode = true;
+
+      function enableEditMode() {
+        textField.document.designMode = "On";
+      }
+
+      function execCmd(cd) {
+        console.log("exe");
+        textField.document.execCommand(cd, false, null);
+      }
+
+      function execCommandWithArg(cd, arg) {
+        textField.document.execCommand(cd, false, arg);
+      }
+
+      function toggleSource() {
+        if (showingSourceCode) {
+          textField.document.getElementByTagName("body")[0].innerHTML =
+            textField.document.getElementByTagName("body")[0].textContent;
+          showingSourceCode = false;
+        } else {
+          textField.document.getElementByTagName("body")[0].textContent =
+            textField.document.getElementByTagName("body")[0].innerHTML;
+          showingSourceCode = true;
+        }
+      }
+
+      function toggleEdit() {
+        if (isInEditMode) {
+          textField.document.designMode = "Off";
+          isInEditMode = false;
+        } else {
+          textField.document.designMode = "On";
+          isInEditMode = true;
+        }
+      }
+
+      // function toggleSelection(button) {
+      //   var selectedClass = "selected-button";
+      //   var nonSelectedClass = "nonselected-button";
+
+      //   if (button.classList.contains(selectedClass)) {
+      //     button.classList.remove(selectedClass);
+      //     button.classList.add(nonSelectedClass);
+      //   } else if (button.classList.contains(nonSelectedClass)) {
+      //     button.classList.remove(nonSelectedClass);
+      //     button.classList.add(selectedClass);
+      //   } else {
+      //     // If the button has neither class, we assume it's initially non-selected
+      //     button.classList.add(selectedClass);
+      //   }
+      //  // var command = button.getAttribute('data-command');;
+      //   execCmd(command);
+      // }
+
+      function toggleSelection(button) {
+        var buttons = document.getElementsByClassName("toggle-button");
+        var selectedClass = "selected-button";
+        var nonSelectedClass = "nonselected-button";
+
+        var jtls = false;
+        var jtrgt = false;
+        var jtcen = false;
+        var jtfull = false;
+
+        for (var i = 0; i < buttons.length; i++) {
+          if (buttons[i] === button) {
+            // console.log(button, "button");
+            var datacmd = button.getAttribute("datacommand");
+
+            // console.log(datacmd, "button.datacommand");
+
+            if (datacmd === "justifyLeft") {
+              console.log("jlft");
+              jtls = true;
+              jtrgt = false;
+              jtcen = false;
+              jtfull = false;
+              console.log(jtls);
+            }
+            if (datacmd === "justifyRight") {
+              // console.log("jrgt");
+              jtrgt = true;
+              jtls = false;
+              jtcen = false;
+              jtfull = false;
+            }
+            if (datacmd === "justifyCenter") {
+              // console.log("jtcen");
+
+              jtcen = true;
+              jtls = false;
+              jtrgt = false;
+              jtfull = false;
+            }
+            if (datacmd === "justifyFull") {
+              // console.log("jtfull");
+              jtfull = true;
+              jtls = false;
+              jtrgt = false;
+              jtcen = false;
+            }
+            // Toggle the selected state for the clicked button
+            if (button.classList.contains(selectedClass)) {
+              // console.log("remove");
+              button.classList.remove(selectedClass);
+              button.classList.add(nonSelectedClass);
+            } else if (button.classList.contains(nonSelectedClass)) {
+              // console.log("add");
+              button.classList.remove(nonSelectedClass);
+              button.classList.add(selectedClass);
+            } else {
+              // console.log("add else");
+              button.classList.add(selectedClass);
+            }
+          }
+
+          if (
+            buttons[i].getAttribute("datacommand") === "justifyLeft" &&
+            jtls === false
+          ) {
+            // console.log("fasle lgt");
+            if (buttons[i].classList.contains(selectedClass)) {
+              buttons[i].classList.remove(selectedClass);
+              buttons[i].classList.add(nonSelectedClass);
+            }
+          }
+          if (
+            buttons[i].getAttribute("datacommand") === "justifyRight" &&
+            jtrgt === false
+          ) {
+            // console.log("fasle rgt");
+            if (buttons[i].classList.contains(selectedClass)) {
+              buttons[i].classList.remove(selectedClass);
+              buttons[i].classList.add(nonSelectedClass);
+            }
+          }
+          if (
+            buttons[i].getAttribute("datacommand") === "justifyCenter" &&
+            jtcen === false
+          ) {
+            // console.log("fasle cen");
+
+            if (buttons[i].classList.contains(selectedClass)) {
+              buttons[i].classList.remove(selectedClass);
+              buttons[i].classList.add(nonSelectedClass);
+            }
+          }
+          if (
+            buttons[i].getAttribute("datacommand") === "justifyFull" &&
+            jtfull === false
+          ) {
+            // console.log("fasle full");
+
+            if (buttons[i].classList.contains(selectedClass)) {
+              buttons[i].classList.remove(selectedClass);
+              buttons[i].classList.add(nonSelectedClass);
+            }
+          }
+
+          // else {
+          //   // Make sure all other buttons are non-selected
+          //   buttons[i].classList.remove(selectedClass);
+          //   buttons[i].classList.add(nonSelectedClass);
+          // }
+        }
+
+        execCmd(datacmd);
+      }
+
+      function addSelectionListener() {
+        // console.log("add exe ");
+        const textField = document.getElementsByName("textField")[0];
+        // console.log(document.getElementsByName("textField"), "textfield");
+        textField.contentDocument.addEventListener(
+          "selectionchange",
+          updateButtonState
+        );
+      }
+
+      // function rgbToHex(rgb) {
+      //   // Convert RGB to hexadecimal format
+      //   const rgbArray = rgb.match(/\d+/g);
+      //   const hex = rgbArray
+      //     .map((component) => parseInt(component).toString(16).padStart(2, "0"))
+      //     .join("");
+      //   return `#${hex}`;
+      // }
+      function rgbaToHex(rgba) {
+        // Convert "rgba(r, g, b, a)" to an array of integers [r, g, b, a]
+        const rgbaValues = rgba.match(/\d+/g).map(Number);
+
+        // Convert the RGB part to hex (ignoring alpha channel)
+        const hex = rgbaValues
+          .slice(0, 3)
+          .map((color) => {
+            const hexColor = color.toString(16);
+            return hexColor.length === 1 ? "0" + hexColor : hexColor;
+          })
+          .join("");
+
+        return "#" + hex;
+      }
+
+      function updateButtonState() {
+        // console.log("update button exe ");
+        const textField = document.getElementsByName("textField")[0];
+        const boldButton = document.getElementById("boldButton");
+        const italicButton = document.getElementById("italicButton");
+        const underlineButton = document.getElementById("underlineButton");
+        const textColorPicker = document.getElementById("textColorPicker");
+        const bgColorPicker = document.getElementById("bgColorPicker");
+
+        const selection = textField.contentDocument.getSelection();
+        // console.log(selection, "selection");
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          let parentElement = range.commonAncestorContainer.parentElement;
+          let isBold = false;
+          let isItalic = false;
+          let isUnderline = false;
+          let textColor = null;
+          let bgColor = null;
+          while (
+            parentElement &&
+            parentElement !== textField.contentDocument.body
+          ) {
+            if (
+              parentElement.tagName === "B" ||
+              parentElement.tagName === "STRONG"
+            ) {
+              isBold = true;
+            }
+            if (parentElement.tagName === "I") {
+              isItalic = true;
+            }
+            if (parentElement.tagName === "U") {
+              isUnderline = true;
+            }
+            if (!textColor) {
+              // console.log(
+              //   window.getComputedStyle(parentElement).color,
+              //   "color"
+              // );
+              textColor = window.getComputedStyle(parentElement).color;
+            }
+
+            if (!bgColor) {
+              bgColor = window.getComputedStyle(parentElement).backgroundColor;
+              if (bgColor === "rgba(0, 0, 0, 0)" || bgColor === "transparent") {
+                // Set a default background color when it's transparent or fully transparent black
+                bgColor = "rgba(255, 255, 255, 1)"; // Replace with your default color (white)
+              }
+              console.log(bgColor, "bgcolor");
+            }
+
+            // Break the loop if both <b> and <i> elements are found
+            if (isBold && isItalic && isUnderline) {
+              break;
+            }
+
+            // Move up to the parent element
+            parentElement = parentElement.parentElement;
+          }
+
+          if (isBold) {
+            boldButton.classList.add("selected-button");
+          } else {
+            boldButton.classList.remove("selected-button");
+          }
+
+          if (isItalic) {
+            italicButton.classList.add("selected-button");
+          } else {
+            italicButton.classList.remove("selected-button");
+          }
+
+          if (isUnderline) {
+            underlineButton.classList.add("selected-button");
+          } else {
+            underlineButton.classList.remove("selected-button");
+          }
+
+          if (textColor && textColor !== "rgba(0, 0, 0, 0)") {
+            textColorPicker.value = rgbaToHex(textColor); // Convert RGB to hexadecimal
+          } else {
+            // Set the default color for the color picker if no valid text color is found
+            textColorPicker.value = "#000000"; // Black color as the default
+          }
+
+          if (bgColor && bgColor !== "rgba(0,0,0,0)") {
+            bgColorPicker.value = rgbaToHex(bgColor);
+          } else {
+            bgColorPicker.value = "#FFFFFF";
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

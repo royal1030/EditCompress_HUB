@@ -1,0 +1,43 @@
+
+
+html,
+body {
+    height: 100%;
+    /* width: 100%; */
+    margin: 0;
+    padding: 0;
+}
+
+#container h2{
+    color: blue;
+    margin: 10px;
+    padding: 10px;
+}
+
+.text_box {
+    padding: 30px;
+    width: 50%;
+    height: 100%;
+    border: 1px solid lightgray;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+#container{
+    width: 100%;
+    height: 70%;
+    background-color: white;
+    display: flex;
+    margin: 0 auto;
+}
+
+.center_buttons{
+    margin:auto;
+    display:block;
+}
+/* #left-container {
+    border: 2px dashed #007bff;
+    padding: 20px;
+    text-align: center;
+  } */
